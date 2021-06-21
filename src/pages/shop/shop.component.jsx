@@ -1,57 +1,66 @@
 import React from 'react';
 // import { Route } from 'react-router-dom';
-import { NavBar } from '../../components/nav-bar/navbar.component';
+import { Row, Col } from 'react-bootstrap';
+import axios from 'axios';
+import { Pagination } from '@material-ui/lab';
+import { CollectionPreview } from '../../components/collection-preview/collection-preview.component';
 import './shop.styles.scss';
 
-class Shop extends React.Component {
+class ShopPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      links: [
-        { name: 'Browse', icon: ['fas', 'list-ul'], href: '/browse', id: 3 },
-      ],
-      dropdowns: [
-        {
-          id: 1,
-          name: 'Account',
-          icon: ['fas', 'user'],
-          present: true,
-          links: [{ name: 'Sign Out', href: '/', id: 1 }],
-        },
-      ],
-      dropFlag: true,
+      page: 1,
+      limit: 4,
+      pagination: {},
+      collections: [],
+      filters: {
+        radius: '',
+        zipcode: '',
+        avgRating: 1,
+        category: 'any',
+      },
 
       backgroundImgUrl: 'https://i.ibb.co/pzscd59/showcase.jpg',
     };
   }
 
+  componentDidMount() {
+    axios
+      .get(
+        `https://windmeal.live/api/v1/farms?limit=${this.state.limit}&page=${this.state.page}`
+      )
+      .then((response) => response.data)
+      .then(({ data, pagination }) =>
+        this.setState({ collections: data, pagination: pagination })
+      );
+    //   this.setState({ collections: farms })
+  }
+
   render() {
     return (
-      <div className="homepage">
-        <div style={{ position: 'relative' }}>
-          <NavBar
-            links={this.state.links}
-            dropdowns={this.state.dropdowns}
-            dropFlag={this.state.dropFlag}
-          />
-        </div>
+      <div className="shoppage">
+        <Row style={{ height: '100%' }}>
+          <Col sm={4}>
+            <div className="filters-container">
+              <h1> Geo filtering</h1>
 
-        <div className="background-container">
-          <div
-            className="background-image"
-            style={{
-              backgroundImage: `url(${this.state.backgroundImgUrl})`,
-            }}
-          >
-            <div className="dark-overlay"></div>
-          </div>
-          <div className="content">
-            <h1>Browse Farms</h1>
-          </div>
-        </div>
+              <h1>Filter on rating</h1>
+
+              <h1>Filter on Amenities</h1>
+            </div>
+          </Col>
+          <Col>
+            <div className="collection-preview-container">
+              <CollectionPreview items={this.state.collections} />
+
+              <Pagination count={this.state.page} />
+            </div>
+          </Col>
+        </Row>
       </div>
     );
   }
 }
 
-export default Shop;
+export default ShopPage;

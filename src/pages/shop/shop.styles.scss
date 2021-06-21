@@ -1,0 +1,21 @@
+.shoppage {
+  //   position: absolute;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  scroll-behavior: initial;
+}
+
+.filters-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+}
+
+.collection-preview-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 10px;
+}
