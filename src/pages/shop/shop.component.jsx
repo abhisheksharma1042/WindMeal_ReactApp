@@ -24,6 +24,18 @@ class ShopPage extends React.Component {
       backgroundImgUrl: 'https://i.ibb.co/pzscd59/showcase.jpg',
     };
   }
+  handlePageChange = (event, value) => {
+    this.setState({ page: value }, () => {
+      axios
+        .get(
+          `https://windmeal.live/api/v1/farms?limit=${this.state.limit}&page=${this.state.page}`
+        )
+        .then((response) => response.data)
+        .then(({ data, pagination }) =>
+          this.setState({ collections: data, pagination: pagination })
+        );
+    });
+  };
 
   componentDidMount() {
     axios
@@ -36,6 +48,8 @@ class ShopPage extends React.Component {
       );
     //   this.setState({ collections: farms })
   }
+
+  componentDidUpdate() {}
 
   render() {
     return (
@@ -53,8 +67,17 @@ class ShopPage extends React.Component {
           <Col>
             <div className="collection-preview-container">
               <CollectionPreview items={this.state.collections} />
-
-              <Pagination count={this.state.page} />
+              <Pagination
+                count={
+                  this.state.pagination.next
+                    ? this.state.pagination.next.page
+                    : 1
+                }
+                page={this.state.page}
+                siblingCount={1}
+                boundaryCount={1}
+                onChange={this.handlePageChange}
+              />
             </div>
           </Col>
         </Row>

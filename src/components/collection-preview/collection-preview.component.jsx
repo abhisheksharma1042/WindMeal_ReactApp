@@ -9,11 +9,17 @@ export const CollectionPreview = withRouter((props) => {
   return (
     <div className="collection-container">
       <div className="collection-item">
-        <h1>Preview Collection</h1>
-
-        {items.map((item) => (
-          <CollectionItem key={item.id} name={item.name} />
-        ))}
+        {items.map(({ name, description, averageRating, id, location }) => {
+          return (
+            <CollectionItem
+              key={id}
+              name={name}
+              description={description}
+              averageRating={averageRating}
+              loc={location}
+            />
+          );
+        })}
       </div>
     </div>
   );

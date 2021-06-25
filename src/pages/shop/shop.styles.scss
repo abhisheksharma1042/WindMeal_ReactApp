@@ -3,7 +3,8 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  scroll-behavior: initial;
+  //   overflow-y: scroll;
+  //   scroll-behavior: initial;
 }
 
 .filters-container {
@@ -17,5 +18,6 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-right: 2rem;
   margin-top: 10px;
 }
